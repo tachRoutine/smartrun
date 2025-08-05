@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	url := "http://localhost:8080/v1/models/smollm2/infer"
+	url := "http://localhost:8080/"
 
 	payload := map[string]interface{}{
 		"input": "Hello, how can I use Docker with Go?",
