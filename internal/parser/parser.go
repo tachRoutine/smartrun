@@ -37,6 +37,7 @@ func (p *Parser) ExtractJson(input string) []string {
 	return jsonStrings
 }
 
+// ParseExecTags 
 func (p *Parser) ParseExecTags(input string) []string {
 	var commands []string
 	startTag := "<exec>"
@@ -62,6 +63,7 @@ func (p *Parser) ParseExecTags(input string) []string {
 	return commands
 }
 
+// findIndex returns the index of a substring in a specific string
 func findIndex(s, substr string) int {
 	for i := 0; i <= len(s)-len(substr); i++ {
 		if s[i:i+len(substr)] == substr {
@@ -71,6 +73,7 @@ func findIndex(s, substr string) int {
 	return -1
 }
 
+// ParserJson returns types.LLMResponse from a json bytedata
 func (p *Parser) ParseJson(jsonData []byte) (*types.LLMResponse, error) {
 	var response types.LLMResponse
 	err := json.Unmarshal(jsonData, &response)
@@ -80,6 +83,5 @@ func (p *Parser) ParseJson(jsonData []byte) (*types.LLMResponse, error) {
 	return &response, nil
 }
 
-// Parser handles parsing of <exec>...</exec> tags from LLM responses
 
 
