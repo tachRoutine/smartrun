@@ -1,5 +1,3 @@
-# SmartRun Makefile
-
 .PHONY: build test clean install run dev lint
 
 # Variables
