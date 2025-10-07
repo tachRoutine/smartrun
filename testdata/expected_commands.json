@@ -1,0 +1,14 @@
+[
+    {
+        "command": "ls -la",
+        "description": "List directory contents with details"
+    },
+    {
+        "command": "pwd",
+        "description": "Show current working directory"
+    },
+    {
+        "command": "uname -a",
+        "description": "Display system information"
+    }
+]
