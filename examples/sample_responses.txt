@@ -1,0 +1,10 @@
+Here are some sample responses that contain execution tags:
+
+Response 1:
+"I'll help you list the files. <exec>ls -la</exec> This will show all files including hidden ones."
+
+Response 2:
+"Let me check the system info: <exec>uname -a</exec> and also check the date: <exec>date</exec>"
+
+Response 3:
+"To create a new directory: <exec>mkdir test_dir</exec> and then navigate to it: <exec>cd test_dir</exec>"
