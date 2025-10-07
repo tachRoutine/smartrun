@@ -13,6 +13,30 @@ func NewParser() *Parser {
 	return &Parser{}
 }
 
+func (p *Parser) ExtractJson(input string) []string {
+	var jsonStrings []string
+	startTag := "{"
+	endTag := "}"
+
+	for {
+		startIdx := findIndex(input, startTag)
+		if startIdx == -1 {
+			break
+		}
+		endIdx := findIndex(input[startIdx:], endTag)
+		if endIdx == -1 {
+			break
+		}
+		endIdx += startIdx
+
+		jsonString := input[startIdx : endIdx+len(endTag)]
+		jsonStrings = append(jsonStrings, jsonString)
+
+		input = input[endIdx+len(endTag):]
+	}
+	return jsonStrings
+}
+
 func (p *Parser) ParseExecTags(input string) []string {
 	var commands []string
 	startTag := "<exec>"
