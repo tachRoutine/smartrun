@@ -1,0 +1,11 @@
+Sure, I can help you with that! Let me check what files are in the current directory.
+
+<exec>ls -la</exec>
+
+Now let me also show you the current working directory:
+
+<exec>pwd</exec>
+
+If you want to see the system information, I can run:
+
+<exec>uname -a</exec>
