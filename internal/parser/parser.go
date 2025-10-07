@@ -3,6 +3,7 @@ package parser
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/tachRoutine/smartrun/pkg/types"
 )
@@ -13,67 +14,78 @@ func NewParser() *Parser {
 	return &Parser{}
 }
 
+// ExtractJson extracts JSON objects from a string, handling nested braces properly
 func (p *Parser) ExtractJson(input string) []string {
 	var jsonStrings []string
-	startTag := "{"
-	endTag := "}"
 
-	for {
-		startIdx := findIndex(input, startTag)
-		if startIdx == -1 {
-			break
+	for i := 0; i < len(input); i++ {
+		if input[i] == '{' {
+			// Found start of JSON object, now find matching closing brace
+			braceCount := 1
+			start := i
+			j := i + 1
+
+			for j < len(input) && braceCount > 0 {
+				switch input[j] {
+				case '{':
+					braceCount++
+				case '}':
+					braceCount--
+				}
+				j++
+			}
+
+			if braceCount == 0 {
+				// Found matching closing brace
+				jsonString := input[start:j]
+				jsonStrings = append(jsonStrings, jsonString)
+				i = j - 1 // Continue from after this JSON object
+			}
 		}
-		endIdx := findIndex(input[startIdx:], endTag)
-		if endIdx == -1 {
-			break
-		}
-		endIdx += startIdx
-
-		jsonString := input[startIdx : endIdx+len(endTag)]
-		jsonStrings = append(jsonStrings, jsonString)
-
-		input = input[endIdx+len(endTag):]
 	}
+
 	return jsonStrings
 }
 
-// ParseExecTags 
+// ParseExecTags extracts content between <exec> and </exec> tags
 func (p *Parser) ParseExecTags(input string) []string {
 	var commands []string
 	startTag := "<exec>"
 	endTag := "</exec>"
 
 	for {
-		startIdx := findIndex(input, startTag)
+		startIdx := strings.Index(input, startTag)
 		if startIdx == -1 {
 			break
 		}
-		endIdx := findIndex(input[startIdx:], endTag)
+
+		endIdx := strings.Index(input[startIdx+len(startTag):], endTag)
 		if endIdx == -1 {
 			break
 		}
-		endIdx += startIdx
+
+		// Adjust endIdx to be relative to original input
+		endIdx += startIdx + len(startTag)
 
 		command := input[startIdx+len(startTag) : endIdx]
 		commands = append(commands, command)
 
+		// Continue searching from after the end tag
 		input = input[endIdx+len(endTag):]
 	}
 
 	return commands
 }
 
-// findIndex returns the index of a substring in a specific string
-func findIndex(s, substr string) int {
-	for i := 0; i <= len(s)-len(substr); i++ {
-		if s[i:i+len(substr)] == substr {
-			return i
-		}
+func findIndex(s string, substr string, start int) int {
+	index := strings.Index(s[start:], substr)
+	if index == -1 {
+		return -1
 	}
-	return -1
+	return start + index
 }
 
-// ParserJson returns types.LLMResponse from a json bytedata
+// ParseJson returns types.LLMResponse from a json bytedata
 func (p *Parser) ParseJson(jsonData []byte) (*types.LLMResponse, error) {
 	var response types.LLMResponse
 	err := json.Unmarshal(jsonData, &response)
@@ -82,6 +94,3 @@ func (p *Parser) ParseJson(jsonData []byte) (*types.LLMResponse, error) {
 	}
 	return &response, nil
 }
-
-
-
