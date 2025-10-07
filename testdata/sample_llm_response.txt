@@ -1,11 +1,23 @@
-Sure, I can help you with that! Let me check what files are in the current directory.
-
-<exec>ls -la</exec>
-
-Now let me also show you the current working directory:
-
-<exec>pwd</exec>
-
-If you want to see the system information, I can run:
-
-<exec>uname -a</exec>
+{
+  "instructions": "Sure, I can help you with that! Let me check what files are in the current directory, show you the current working directory, and display system information.",
+  "commands": [
+    {
+      "command": "ls -la",
+      "description": "List all files in the current directory with detailed information",
+      "platform": "all",
+      "dangerous": false
+    },
+    {
+      "command": "pwd",
+      "description": "Show the current working directory path",
+      "platform": "all", 
+      "dangerous": false
+    },
+    {
+      "command": "uname -a",
+      "description": "Display detailed system information including kernel and architecture",
+      "platform": "all",
+      "dangerous": false
+    }
+  ]
+}
