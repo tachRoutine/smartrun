@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/tachRoutine/smartrun/internal/executor"
 	"github.com/tachRoutine/smartrun/internal/parser"
 	"github.com/tachRoutine/smartrun/pkg/types"
 )
@@ -38,6 +39,9 @@ func main() {
 			continue
 		}
 		fmt.Println("PARSED JSON", parsed)
+		executor.NewExecutor().Execute(*parsed)
 	}
+
+	fmt.Println("==================================================")
 
 }

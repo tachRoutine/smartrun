@@ -16,7 +16,9 @@ func NewExecutor() *Executor {
 
 // Execute runs the given command and returns its output or an error
 func (e *Executor) Execute(llmRes types.LLMResponse) error {
+	fmt.Println("Instructions:", llmRes.Instructions)
 	for _, command := range llmRes.Commands {
+		fmt.Println("Executing command:", command.Command, "\nDescription:", command.Description, "\nPlatform:", command.Platform, "\nDangerous:", command.Dangerous)
 		output, err := runCommand(command)
 		if err != nil {
 			return err
