@@ -2,6 +2,10 @@ package main
 
 import (
 	"fmt"
+	"os"
+
+	"github.com/tachRoutine/smartrun/internal/parser"
+	"github.com/tachRoutine/smartrun/pkg/types"
 )
 
 // The idea ihave
@@ -11,5 +15,29 @@ import (
 // then return the output of the command to the user
 
 func main() {
-	fmt.Println("Hello, World!")
+	testResponse, err := os.ReadFile("./testdata/sample_llm_response.txt")
+	if err != nil {
+		fmt.Println("Error reading file:", err)
+		return
+	}
+	parser := parser.NewParser()
+	execCommands := parser.ParseExecTags(string(testResponse))
+	fmt.Println("Extracted commands between <exec> tags:")
+	for _, cmd := range execCommands {
+		fmt.Println(cmd)
+	}
+
+	jsonObjects := parser.ExtractJson(string(testResponse))
+	
+	for _, jsonObj := range jsonObjects {
+		fmt.Println("\nExtracted JSON object:" , jsonObj)
+		var parsed *types.LLMResponse
+		parsed, err = parser.ParseJson([]byte(jsonObj))
+		if err != nil {
+			fmt.Println("Error parsing JSON:", err)
+			continue
+		}
+		fmt.Println("PARSED JSON", parsed)
+	}
+
 }
