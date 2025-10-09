@@ -42,6 +42,4 @@ func main() {
 		executor.NewExecutor().Execute(*parsed)
 	}
 
-	fmt.Println("==================================================")
-
 }

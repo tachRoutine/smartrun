@@ -2,7 +2,6 @@ package executor
 
 import (
 	"fmt"
-	"os/exec"
 	"runtime"
 	"strings"
 
@@ -47,7 +46,7 @@ func (e *Executor) Execute(llmRes types.LLMResponse) error {
 // runCommand executes a single command, handling dangerous commands with confirmation
 func (e *Executor) runCommand(command types.Command) (string, error) {
 	if command.Dangerous {
-		fmt.Printf("WARNING: This command is marked as dangerous!\n")
+		fmt.Printf("[WARNING]: This command is marked as dangerous!\n") //TODO: Will remove these once i am done with the logic
 		fmt.Printf("Command: %s\n", command.Command)
 
 		if !utils.AskForConfirmation("Do you want to continue?") {
@@ -55,21 +54,15 @@ func (e *Executor) runCommand(command types.Command) (string, error) {
 		}
 	}
 
-	// Split command properly by spaces,
+	// Splitting commands properly by spaces,
 	args := e.parseCommand(command.Command)
 	if len(args) == 0 {
 		return "", fmt.Errorf("empty command")
 	}
-
-	// Create the command
-	cmd := exec.Command(args[0], args[1:]...)
-
-	// Execute and get output
-	output, err := cmd.CombinedOutput()
+	output, err := Run(args, "Failed to execute command:")
 	if err != nil {
-		return string(output), fmt.Errorf("command failed: %v", err)
+		return output, fmt.Errorf("command failed: %v", err)
 	}
-
 	return string(output), nil
 }
 
