@@ -26,6 +26,7 @@ func (e *Executor) Execute(llmRes types.LLMResponse) error {
 	return nil
 }
 
+// runCommand executes a single command, handling dangerous commands with confirmation
 func runCommand(command types.Command) (string, error) {
 	if command.Dangerous {
 		if utils.AskForConfirmation("Do you want to continue?") {

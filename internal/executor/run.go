@@ -5,6 +5,7 @@ import (
 	"os/exec"
 )
 
+// Run executes a command and returns its output or an error
 func Run(cmdArgs []string, errMsg string) (string, error) {
 	cmd := exec.Command(cmdArgs[0], cmdArgs[1:]...)
 	output, err := cmd.CombinedOutput()
