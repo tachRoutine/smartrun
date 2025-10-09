@@ -2,6 +2,7 @@ package executor
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/tachRoutine/smartrun/pkg/types"
 	"github.com/tacheraSasi/tripwire/utils"
@@ -26,12 +27,21 @@ func (e *Executor) Execute(llmRes types.LLMResponse) error {
 }
 
 func runCommand(command types.Command) (string, error) {
-	if command.Dangerous{
+	if command.Dangerous {
 		if utils.AskForConfirmation("Do you want to continue?") {
-			fmt.Println("Continuing...")
+			commands := strings.Split(command.Command, "")
+			output, err := Run(commands, "Error executing command:"+command.Command)
+			if err != nil {
+				return output, err
+			}
 		} else {
 			return "Cancelled", fmt.Errorf("Cancelled")
 		}
 	}
-	return "", nil
+	commands := strings.Split(command.Command, "")
+	output, err := Run(commands, "Error executing command:"+command.Command)
+	if err != nil {
+		return "", err
+	}
+	return output, nil
 }
