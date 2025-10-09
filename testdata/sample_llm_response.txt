@@ -14,6 +14,12 @@
       "dangerous": false
     },
     {
+      "command": "ellie -h",
+      "description": "Show the current working directory path",
+      "platform": "all", 
+      "dangerous": false
+    },
+    {
       "command": "uname -a",
       "description": "Display detailed system information including kernel and architecture",
       "platform": "all",
