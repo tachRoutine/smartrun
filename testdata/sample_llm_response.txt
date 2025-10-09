@@ -21,3 +21,17 @@
     }
   ]
 }
+
+
+
+Here are some commands to run:
+
+<exec>ls -la</exec>
+
+Let me also check the directory:
+
+<exec>pwd</exec>
+
+And finally system info:
+
+<exec>uname -a</exec>
